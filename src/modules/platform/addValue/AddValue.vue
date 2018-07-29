@@ -170,8 +170,16 @@
             async getProjects() {
                 let data = await api_getProjects();
                 this.projects = data.data.data;
-                this.currentProject = data.data.data[10].id;
-                this.currentEnterprise = data.data.data[10].enterprise;
+                // 获取项目ID
+                if(this.$route.query.productId){
+                    this.currentProject = parseInt(this.$route.query.productId);
+                }else{
+                    this.currentProject = data.data.data[0].id;
+                }
+                // 获取当前项目价值
+                this.projects.forEach((value) => {
+                    this.currentProject === value.id && (this.currentEnterprise = value.enterprise);
+                });
                 this.getProjectsEvents();
             },
             // 获取项目事件

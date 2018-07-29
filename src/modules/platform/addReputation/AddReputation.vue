@@ -232,8 +232,15 @@
             async getProjects() {
                 let data = await api_getProjects();
                 this.projects = data.data.data;
-                this.currentProject = data.data.data[9].id;
-                this.currentAddAssets = data.data.data[9].addAssets;
+                // 获取项目ID
+                if(this.$route.query.productId){
+                    this.currentProject = parseInt(this.$route.query.productId);
+                }else{
+                    this.currentProject = data.data.data[0].id;
+                }
+                this.projects.forEach((value) => {
+                    this.currentProject === value.id && (this.currentAddAssets = value.addAssets);
+                });
                 this.getProjectsReports();
                 this.getProjectsContract();
                 this.getProjectsDisclosure();
